@@ -4,7 +4,12 @@ import time
 import os, os.path
 
 
+# ---------------- choose tradepair: ---------------------
+
 trade_pair = "xmrusdt"
+
+# ------------------------!!!------------------------------
+
 res = int(input("round to: "))
 file_name = f"extracted_trades/{trade_pair}/extracted_trades_{trade_pair}_{res}.csv"
 stream_file = f"datastream/{trade_pair}/recent_trades_{trade_pair}.txt"
@@ -14,9 +19,9 @@ rnd = 2
 header = [str('Time'), str('Price'), str('Amount Bought'), str('Amount Sold'), str('Delta'), str("Sum of Delta"),
           str("Volume")]
 
-# Kod który od nowa nadpisuje cały plik:
-overwrite = str(input("Czy nadpisać istniejący plik? (Tak/Nie [y/n]): "))
-continous = str(input("Czy pozostawić program w trybie non stop analysis? (Tak/Nie [y/n]): "))
+# Overwriting previous extracting file:
+overwrite = str(input("Do you want to overwrite existing file? [y/n]: "))
+continous = str(input("Do you want to perform 'non stop' analysis? (Tak/Nie [y/n]): "))
 
 if str.lower(overwrite) == ('y' or 'yes' or 'tak' or 't'):
 
@@ -131,7 +136,7 @@ while i == 1:
             previous_time = actual_time
             volume = 0
 
-    # zapisanie ostatniego wiersza:
+    # saving last row of analyzed data file to start from it in next running of extracting.py:
     with open(config_name, 'w') as f:
         config = {
                 "Last_Row": LastRow,
@@ -145,4 +150,6 @@ while i == 1:
         json.dump(config, f)
     if str.lower(continous) != ('y' or 'yes' or 'tak' or 't'):
         i = -1
+
+    # choose how often you want to refresh analyze:
     time.sleep(30)
